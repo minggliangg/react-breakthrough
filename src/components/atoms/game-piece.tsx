@@ -1,0 +1,44 @@
+import { useDraggable } from '@dnd-kit/core';
+import type { GamePieceType } from '../../utils/types';
+
+interface GamePieceProps {
+  id: string;
+  color: GamePieceType;
+}
+
+const GamePiece = ({ id, color }: GamePieceProps) => {
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: id,
+  });
+  const fillColor = color === 'black' ? 'fill-blue-500' : 'fill-white';
+
+  return (
+    <div
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+      style={{
+        transform: transform
+          ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
+          : undefined,
+      }}
+    >
+      <svg
+        className={`w-4 h-4 ${fillColor} stroke-black stroke-20 cursor-pointer :hover:stroke-blue-500`}
+        viewBox='0 -10 320 320'
+        xmlns='http://www.w3.org/2000/svg'
+      >
+        <path
+          d='M223.333,247h-5.926c2.607-3.811,10.798-18.024-0.727-32.248c-13.334-16.46-39.863-65.748-27.324-98.752h0.977
+         c4.418,0,7.667-3.582,7.667-8v-1c0-4.418-3.249-8-7.667-8h-1.225c10.917-10.466,17.725-25.184,17.725-41.5
+         c0-31.756-25.744-57.5-57.5-57.5s-57.5,25.744-57.5,57.5c0,16.316,6.808,31.034,17.725,41.5h-2.225c-4.418,0-8.333,3.582-8.333,8v1
+         c0,4.418,3.915,8,8.333,8h1.979c12.539,33.004-13.99,82.292-27.324,98.752c-11.524,14.224-3.334,28.437-0.727,32.248h-6.928
+         c-4.418,0-8.333,3.582-8.333,8v18c0,4.418,3.915,8,8.333,8H75v16h148v-16c5,0,8-3.582,8-8v-18C231,250.582,227.751,247,223.333,247
+         z'
+        />
+      </svg>
+    </div>
+  );
+};
+
+export default GamePiece;
