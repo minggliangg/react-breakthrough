@@ -1,13 +1,13 @@
-import type { UniqueIdentifier } from '@dnd-kit/core';
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { DEFAULT_ROWS_COLS } from '../utils/constants';
 import type { GameStateType } from '../utils/types';
+import { GameStateContext } from './gameStateContext';
 
-const useGameMechanics = () => {
-  const [gameState, setGameState] = useState<GameStateType>(
-    Array(DEFAULT_ROWS_COLS ^ 2).fill(null),
-  );
+const GameStateProvider = ({ children }: { children: ReactNode }) => {
   const [isGameStarted, setIsGameStarted] = useState(false);
+  const [gameState, setGameState] = useState<GameStateType>(
+    Array(DEFAULT_ROWS_COLS ** 2).fill(null),
+  );
 
   const startGame = (
     rows: number = DEFAULT_ROWS_COLS,
@@ -25,7 +25,7 @@ const useGameMechanics = () => {
           if (i > totalSquares - 2 * cols - 1) {
             return 'white';
           }
-          return undefined;
+          return null;
         }),
     );
   };
@@ -42,32 +42,39 @@ const useGameMechanics = () => {
     return row * DEFAULT_ROWS_COLS + col;
   };
 
-  const movePiece = ({
-    active,
-    over,
-  }: {
-    active: UniqueIdentifier;
-    over?: UniqueIdentifier;
-  }) => {
+  const movePiece = ({ active, over }: { active: string; over?: string }) => {
     if (!over) {
       return;
     }
-    const activeIndex = getIndexFromId(active.toString());
-    const overIndex = getIndexFromId(over.toString());
+    const activeIndex = getIndexFromId(active);
+    const overIndex = getIndexFromId(over);
 
-    console.log(`active: ${activeIndex}, over: ${overIndex}`);
-    console.log(
-      `activeState ${gameState[activeIndex]}, overState ${gameState[overIndex]}`,
-    );
+    if (activeIndex === overIndex) {
+      return;
+    }
+
     setGameState((prevState) => {
       const newState = [...prevState];
       newState[overIndex] = newState[activeIndex];
-      newState[activeIndex] = undefined;
+      newState[activeIndex] = null;
       return newState;
     });
   };
 
-  return { gameState, isGameStarted, startGame, resetGame, movePiece };
+  return (
+    <GameStateContext.Provider
+      value={{
+        gameState,
+        setGameState,
+        startGame,
+        resetGame,
+        movePiece,
+        isGameStarted,
+      }}
+    >
+      {children}
+    </GameStateContext.Provider>
+  );
 };
 
-export default useGameMechanics;
+export default GameStateProvider;

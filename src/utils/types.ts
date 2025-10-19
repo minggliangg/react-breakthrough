@@ -1,2 +1,2 @@
 export type GamePieceType = 'black' | 'white';
-export type GameStateType = (GamePieceType | undefined)[];
+export type GameStateType = (GamePieceType | null)[];

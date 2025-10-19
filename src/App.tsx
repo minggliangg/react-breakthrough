@@ -1,10 +1,11 @@
 import './App.css';
-import GameBoard from './components/molecules/game-board';
-import useGameMechanics from './hooks/useGameState';
+import GameBoard from './components/molecules/gameBoard';
+import useGameState from './contexts/gameStateContext';
+
 import { DEFAULT_ROWS_COLS } from './utils/constants';
 
 const App = () => {
-  const { gameState, isGameStarted, startGame, resetGame } = useGameMechanics();
+  const { gameState, isGameStarted, startGame, resetGame } = useGameState();
 
   return (
     <>
