@@ -1,5 +1,5 @@
 import { DndContext } from '@dnd-kit/core';
-import useGameState from '../../contexts/gameStateContext';
+import useGameMechanic from '../../hooks/useGameMechanic';
 import type { GameStateType } from '../../utils/types';
 import GameSquare from '../atoms/gameSquare';
 
@@ -8,14 +8,16 @@ interface GameBoardProps {
   columns: number;
   gameState: GameStateType;
 }
+
 const GameBoard = ({ rows, columns, gameState }: GameBoardProps) => {
-  // TODO: this is wrong. need to use context
-  const { movePiece } = useGameState();
+  const { movePiece } = useGameMechanic();
+
   return (
     <DndContext
+      onDragStart={(event) => {
+        console.log(event);
+      }}
       onDragEnd={(event) => {
-        console.log(event.active.id);
-        console.log(event.over?.id);
         movePiece({
           active: event.active.id.toString(),
           over: event.over?.id.toString(),
