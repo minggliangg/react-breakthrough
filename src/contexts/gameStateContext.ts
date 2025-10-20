@@ -1,15 +1,5 @@
-import {
-  createContext,
-  useContext,
-  type Dispatch,
-  type SetStateAction,
-} from 'react';
-import type { GameStateType } from '../utils/types';
-
-type GameStateContextType = {
-  gameState: GameStateType;
-  setGameState: Dispatch<SetStateAction<GameStateType>>;
-};
+import { createContext, useContext } from 'react';
+import type { GameStateContextType } from './gameStateProvider';
 
 export const GameStateContext = createContext<GameStateContextType | null>(
   null,

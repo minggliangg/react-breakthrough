@@ -1,35 +1,25 @@
 import './App.css';
 import GameBoard from './components/molecules/gameBoard';
+import GameMenu from './components/molecules/gameMenu';
 import useGameState from './contexts/gameStateContext';
-import useGameMechanic from './hooks/useGameMechanic';
-
-import { DEFAULT_ROWS_COLS } from './utils/constants';
 
 const App = () => {
-  const { gameState } = useGameState();
-  const { isGameStarted, startGame, resetGame } = useGameMechanic();
+  const {
+    gameState: { board, rows, cols },
+  } = useGameState();
 
   return (
-    <>
-      <h1>Breakthrough</h1>
-      <button
-        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-        onClick={() =>
-          isGameStarted
-            ? resetGame()
-            : startGame(DEFAULT_ROWS_COLS, DEFAULT_ROWS_COLS)
-        }
-      >
-        {isGameStarted ? 'Reset' : 'Start'}
-      </button>
+    <div className='p-8 flex gap-4 flex-col'>
+      <h1 className='text-4xl font-bold text-center'>Breakthrough</h1>
 
-      <p>isGameStarted: {isGameStarted.toString()}</p>
-      <GameBoard
-        rows={DEFAULT_ROWS_COLS}
-        columns={DEFAULT_ROWS_COLS}
-        gameState={gameState}
-      />
-    </>
+      <GameMenu />
+
+      {board && (
+        <div className='mt-6 flex flex-col items-center'>
+          <GameBoard rows={rows} columns={cols} board={board} />
+        </div>
+      )}
+    </div>
   );
 };
 

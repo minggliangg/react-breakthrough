@@ -1,41 +1,38 @@
-import { useState } from 'react';
 import useGameState from '../contexts/gameStateContext';
 import { DEFAULT_ROWS_COLS } from '../utils/constants';
-import { generateInitialBoard, getIndexFromId } from '../utils/gameState';
+import { getIndexFromId } from '../utils/gameState';
 
 const useGameMechanic = () => {
-  const { setGameState } = useGameState();
-  const [isGameStarted, setIsGameStarted] = useState(false);
+  const { gameState, dispatch } = useGameState();
+  const isGameStarted = gameState.board != undefined;
 
   const startGame = (
     rows: number = DEFAULT_ROWS_COLS,
     cols: number = DEFAULT_ROWS_COLS,
   ) => {
-    setIsGameStarted(true);
-    setGameState(generateInitialBoard(rows, cols));
+    dispatch({ type: 'START_GAME', rows, cols });
   };
 
   const resetGame = () => {
-    setGameState(Array(DEFAULT_ROWS_COLS ^ 2).fill(null));
-    setIsGameStarted(false);
+    dispatch({ type: 'RESET_GAME' });
   };
 
   const movePiece = ({ active, over }: { active: string; over?: string }) => {
     if (!over) {
       return;
     }
-    const activeIndex = getIndexFromId(active);
-    const overIndex = getIndexFromId(over);
+
+    const activeIndex = getIndexFromId(active, gameState.cols);
+    const overIndex = getIndexFromId(over, gameState.cols);
 
     if (activeIndex === overIndex) {
       return;
     }
 
-    setGameState((prevState) => {
-      const newState = [...prevState];
-      newState[overIndex] = newState[activeIndex];
-      newState[activeIndex] = null;
-      return newState;
+    dispatch({
+      type: 'MOVE_PIECE',
+      origin: activeIndex,
+      destination: overIndex,
     });
   };
 

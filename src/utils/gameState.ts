@@ -1,10 +1,10 @@
-import { DEFAULT_ROWS_COLS } from './constants';
+import type { GamePieceType } from './types';
 
-export const getIndexFromId = (active: string) => {
+export const getIndexFromId = (active: string, cols: number) => {
   const activeSplit = active.split('-');
   const row = Number(activeSplit[1]);
   const col = Number(activeSplit[2]);
-  return row * DEFAULT_ROWS_COLS + col;
+  return row * cols + col;
 };
 
 export const generateInitialBoard = (rows: number, cols: number) => {
@@ -20,4 +20,15 @@ export const generateInitialBoard = (rows: number, cols: number) => {
       }
       return null;
     });
+};
+
+export const movePiece = (
+  board: (GamePieceType | null)[],
+  origin: number,
+  destination: number,
+) => {
+  const next = [...board];
+  next[destination] = board[origin];
+  next[origin] = null;
+  return next;
 };

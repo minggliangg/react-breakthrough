@@ -1,15 +1,15 @@
 import { DndContext } from '@dnd-kit/core';
 import useGameMechanic from '../../hooks/useGameMechanic';
-import type { GameStateType } from '../../utils/types';
+import type { GameBoardType } from '../../utils/types';
 import GameSquare from '../atoms/gameSquare';
 
 interface GameBoardProps {
   rows: number;
   columns: number;
-  gameState: GameStateType;
+  board: GameBoardType;
 }
 
-const GameBoard = ({ rows, columns, gameState }: GameBoardProps) => {
+const GameBoard = ({ rows, columns, board }: GameBoardProps) => {
   const { movePiece } = useGameMechanic();
 
   return (
@@ -35,7 +35,7 @@ const GameBoard = ({ rows, columns, gameState }: GameBoardProps) => {
                   key={`game-square-${i}-${j}`}
                   id={`square-${i}-${j}`}
                   color={(i + j) % 2 ? 'black' : 'white'}
-                  gamePiece={gameState[i * columns + j]}
+                  gamePiece={board[i * columns + j]}
                 />
               ))}
           </div>

@@ -1,18 +1,59 @@
-import { useState, type ReactNode } from 'react';
+import { useReducer, type ReactNode, type Reducer } from 'react';
 import { DEFAULT_ROWS_COLS } from '../utils/constants';
+import { generateInitialBoard, movePiece } from '../utils/gameState';
 import type { GameStateType } from '../utils/types';
 import { GameStateContext } from './gameStateContext';
 
+type GameStateAction =
+  | { type: 'START_GAME'; rows: number; cols: number }
+  | { type: 'MOVE_PIECE'; origin: number; destination: number }
+  | { type: 'RESET_GAME' };
+
+export type GameStateContextType = {
+  gameState: GameStateType;
+  dispatch: React.ActionDispatch<[action: GameStateAction]>;
+};
+
+const gameStateReducer: Reducer<GameStateType, GameStateAction> = (
+  state: GameStateType,
+  action: GameStateAction,
+): GameStateType => {
+  switch (action.type) {
+    case 'START_GAME':
+      return {
+        ...state,
+        board: generateInitialBoard(action.rows, action.cols),
+        rows: action.rows,
+        cols: action.cols,
+      };
+    case 'MOVE_PIECE':
+      return {
+        ...state,
+        board: movePiece(state.board!, action.origin, action.destination),
+      };
+    case 'RESET_GAME':
+      return {
+        board: undefined,
+        rows: DEFAULT_ROWS_COLS,
+        cols: DEFAULT_ROWS_COLS,
+      };
+    default:
+      return state;
+  }
+};
+
 const GameStateProvider = ({ children }: { children: ReactNode }) => {
-  const [gameState, setGameState] = useState<GameStateType>(
-    Array(DEFAULT_ROWS_COLS ** 2).fill(null),
-  );
+  const [gameState, dispatch] = useReducer(gameStateReducer, {
+    board: undefined,
+    rows: DEFAULT_ROWS_COLS,
+    cols: DEFAULT_ROWS_COLS,
+  });
 
   return (
     <GameStateContext.Provider
       value={{
         gameState,
-        setGameState,
+        dispatch,
       }}
     >
       {children}
