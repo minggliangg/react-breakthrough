@@ -7,6 +7,7 @@ interface GameSquareProps {
   gamePiece: GamePieceType | null;
   color: GamePieceType;
   isAvailabeMove?: boolean;
+  isDisabled?: boolean;
 }
 
 const GameSquare = ({
@@ -14,6 +15,7 @@ const GameSquare = ({
   color,
   gamePiece,
   isAvailabeMove = false,
+  isDisabled = false,
 }: GameSquareProps) => {
   const { isOver, setNodeRef } = useDroppable({
     id: id,
@@ -29,9 +31,15 @@ const GameSquare = ({
   return (
     <div
       ref={setNodeRef}
-      className={`w-6 h-6 content-center justify-items-center ${getSquareColor()} hover:bg-yellow-500`}
+      className={`w-6 h-6 content-center justify-items-center ${getSquareColor()} ${!isDisabled && ' hover:bg-yellow-500'}`}
     >
-      {gamePiece && <GamePiece id={`${id}-game-piece`} color={gamePiece} />}
+      {gamePiece && (
+        <GamePiece
+          id={`${id}-game-piece`}
+          color={gamePiece}
+          isDisabled={isDisabled}
+        />
+      )}
     </div>
   );
 };

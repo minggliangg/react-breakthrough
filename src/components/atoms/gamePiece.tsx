@@ -4,12 +4,15 @@ import type { GamePieceType } from '../../utils/types';
 interface GamePieceProps {
   id: string;
   color: GamePieceType;
+  isDisabled: boolean;
 }
 
-const GamePiece = ({ id, color }: GamePieceProps) => {
+const GamePiece = ({ id, color, isDisabled }: GamePieceProps) => {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    disabled: isDisabled,
     id: id,
   });
+
   const fillColor = color === 'black' ? 'fill-blue-500' : 'fill-white';
 
   return (

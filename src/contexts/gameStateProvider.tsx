@@ -21,21 +21,23 @@ const gameStateReducer: Reducer<GameStateType, GameStateAction> = (
   switch (action.type) {
     case 'START_GAME':
       return {
-        ...state,
         board: generateInitialBoard(action.rows, action.cols),
         rows: action.rows,
         cols: action.cols,
+        currentPlayer: Math.random() < 0.5 ? 'white' : 'black',
       };
     case 'MOVE_PIECE':
       return {
         ...state,
         board: movePiece(state.board!, action.origin, action.destination),
+        currentPlayer: state.currentPlayer === 'white' ? 'black' : 'white',
       };
     case 'RESET_GAME':
       return {
         board: undefined,
         rows: DEFAULT_ROWS_COLS,
         cols: DEFAULT_ROWS_COLS,
+        currentPlayer: 'white',
       };
     default:
       return state;
@@ -47,6 +49,7 @@ const GameStateProvider = ({ children }: { children: ReactNode }) => {
     board: undefined,
     rows: DEFAULT_ROWS_COLS,
     cols: DEFAULT_ROWS_COLS,
+    currentPlayer: 'white',
   });
 
   return (

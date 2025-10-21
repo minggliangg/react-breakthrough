@@ -1,0 +1,12 @@
+[
+  {
+    "adapter": "JavaScript",
+    "label": "Debug React App in Chrome",
+    "type": "chrome",
+    "request": "launch",
+    "url": "http://localhost:5173",
+    "webRoot": "$ZED_WORKTREE_ROOT",
+    "runtimeExecutable": "/Applications/Chromium.app/Contents/MacOS/Chromium",
+    "skipFiles": ["<node_internals>/**", "**/node_modules/**"]
+  }
+]

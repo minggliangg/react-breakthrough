@@ -2,17 +2,28 @@ import './App.css';
 import GameBoard from './components/molecules/gameBoard';
 import GameMenu from './components/molecules/gameMenu';
 import useGameState from './contexts/gameStateContext';
+import useGameMechanic from './hooks/useGameMechanic';
 
 const App = () => {
   const {
     gameState: { board, rows, cols },
   } = useGameState();
 
+  const { isGameStarted, currentPlayer, winner } = useGameMechanic();
+
   return (
     <div className='p-8 flex gap-4 flex-col'>
       <h1 className='text-4xl font-bold text-center'>Breakthrough</h1>
 
       <GameMenu />
+
+      {isGameStarted && (
+        <p className='text-center'>
+          Current player is {currentPlayer.toLocaleUpperCase()}
+        </p>
+      )}
+
+      {winner() && <p className='text-center'>Winner is {winner()}</p>}
 
       {board && (
         <div className='mt-6 flex flex-col items-center'>

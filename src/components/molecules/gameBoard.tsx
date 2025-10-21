@@ -10,12 +10,13 @@ interface GameBoardProps {
 }
 
 const GameBoard = ({ rows, columns, board }: GameBoardProps) => {
-  const { movePiece } = useGameMechanic();
+  const { movePiece, currentPlayer, getValidMoves, validMoves, winner } =
+    useGameMechanic();
 
   return (
     <DndContext
       onDragStart={(event) => {
-        console.log(event);
+        getValidMoves(event.active.id.toString());
       }}
       onDragEnd={(event) => {
         movePiece({
@@ -30,14 +31,22 @@ const GameBoard = ({ rows, columns, board }: GameBoardProps) => {
           <div key={`row-${i}`} className='flex'>
             {Array(columns)
               .fill(0)
-              .map((_, j) => (
-                <GameSquare
-                  key={`game-square-${i}-${j}`}
-                  id={`square-${i}-${j}`}
-                  color={(i + j) % 2 ? 'black' : 'white'}
-                  gamePiece={board[i * columns + j]}
-                />
-              ))}
+              .map((_, j) => {
+                const index = i * columns + j;
+                const gamePiece = board[index];
+                return (
+                  <GameSquare
+                    key={`game-square-${i}-${j}`}
+                    id={`square-${i}-${j}`}
+                    color={(i + j) % 2 ? 'black' : 'white'}
+                    isAvailabeMove={validMoves.includes(index)}
+                    gamePiece={gamePiece}
+                    isDisabled={
+                      winner() != undefined || currentPlayer != gamePiece
+                    }
+                  />
+                );
+              })}
           </div>
         ))}
     </DndContext>
