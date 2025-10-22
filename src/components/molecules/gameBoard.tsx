@@ -1,4 +1,10 @@
-import { DndContext } from '@dnd-kit/core';
+import {
+  DndContext,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
 import useGameMechanic from '../../hooks/useGameMechanic';
 import type { GameBoardType } from '../../utils/types';
 import GameSquare from '../atoms/gameSquare';
@@ -13,8 +19,14 @@ const GameBoard = ({ rows, columns, board }: GameBoardProps) => {
   const { movePiece, currentPlayer, getValidMoves, validMoves, winner } =
     useGameMechanic();
 
+  const mouseSensor = useSensor(MouseSensor);
+  const touchSensor = useSensor(TouchSensor);
+
+  const sensors = useSensors(mouseSensor, touchSensor);
+
   return (
     <DndContext
+      sensors={sensors}
       onDragStart={(event) => {
         getValidMoves(event.active.id.toString());
       }}

@@ -31,7 +31,7 @@ const GameSquare = ({
   return (
     <div
       ref={setNodeRef}
-      className={`w-6 h-6 content-center justify-items-center ${getSquareColor()} ${!isDisabled && ' hover:bg-yellow-500'}`}
+      className={`w-6 h-6 flex items-center justify-center ${getSquareColor()} ${!isDisabled && ' hover:bg-yellow-500'}`}
     >
       {gamePiece && (
         <GamePiece
