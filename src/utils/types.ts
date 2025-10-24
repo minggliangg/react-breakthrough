@@ -1,5 +1,5 @@
 export type GamePieceType = 'black' | 'white';
-export type GameStateType = {
+export type BoardStateType = {
   board: GameBoardType | undefined;
   rows: number;
   cols: number;

@@ -4,11 +4,11 @@ import { getIndexFromId } from '../utils/boardStateUtils';
 import { DEFAULT_ROWS_COLS } from '../utils/constants';
 
 const useGameMechanic = () => {
-  const { boardState: gameState, dispatch } = useBoardState();
+  const { boardState, dispatch } = useBoardState();
 
   const [validMoves, setValidMoves] = useState<number[]>([]);
 
-  const { board, cols, currentPlayer } = gameState;
+  const { board, cols, currentPlayer } = boardState;
 
   const isGameStarted = board != undefined;
 
@@ -42,8 +42,8 @@ const useGameMechanic = () => {
       return;
     }
 
-    const activeIndex = getIndexFromId(active, gameState.cols);
-    const overIndex = getIndexFromId(over, gameState.cols);
+    const activeIndex = getIndexFromId(active, boardState.cols);
+    const overIndex = getIndexFromId(over, boardState.cols);
 
     if (activeIndex === overIndex || !validMoves.includes(overIndex)) {
       return;
@@ -57,14 +57,14 @@ const useGameMechanic = () => {
   };
 
   const getValidMoves = (active: string) => {
-    const activeIndex = getIndexFromId(active, gameState.cols);
+    const activeIndex = getIndexFromId(active, boardState.cols);
 
     if (!isGameStarted) {
       return;
     }
 
     const direction = currentPlayer === 'black' ? 1 : -1;
-    const offset = direction * gameState.cols;
+    const offset = direction * boardState.cols;
     const currentValidMoves = [];
 
     if (board[activeIndex + offset] == null) {

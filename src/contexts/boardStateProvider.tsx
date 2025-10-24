@@ -50,7 +50,7 @@ const boardStateReducer: Reducer<BoardStateType, BoardStateAction> = (
 };
 
 const BoardStateProvider = ({ children }: { children: ReactNode }) => {
-  const [gameState, dispatch] = useReducer(boardStateReducer, {
+  const [boardState, dispatch] = useReducer(boardStateReducer, {
     board: undefined,
     rows: DEFAULT_ROWS_COLS,
     cols: DEFAULT_ROWS_COLS,
@@ -60,7 +60,7 @@ const BoardStateProvider = ({ children }: { children: ReactNode }) => {
   return (
     <BoardStateContext.Provider
       value={{
-        boardState: gameState,
+        boardState,
         dispatch,
       }}
     >
