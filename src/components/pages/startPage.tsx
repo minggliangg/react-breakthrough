@@ -36,7 +36,7 @@ const StartPage = () => {
       </p>
 
       <button
-        className='btn btn-primary'
+        className='btn btn-primary mt-4'
         disabled={isStartButtonDisabled}
         onClick={handleStartOnClick}
       >

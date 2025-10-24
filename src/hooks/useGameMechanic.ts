@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import useGameState from '../contexts/gameStateContext';
+import useBoardState from '../contexts/boardStateContext';
+import { getIndexFromId } from '../utils/boardStateUtils';
 import { DEFAULT_ROWS_COLS } from '../utils/constants';
-import { getIndexFromId } from '../utils/gameState';
 
 const useGameMechanic = () => {
-  const { gameState, dispatch } = useGameState();
+  const { boardState: gameState, dispatch } = useBoardState();
 
   const [validMoves, setValidMoves] = useState<number[]>([]);
 

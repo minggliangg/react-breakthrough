@@ -1,13 +1,13 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
-import GameStateProvider from './contexts/gameStateProvider.tsx';
+import BoardStateProvider from './contexts/boardStateProvider.tsx';
 import './index.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <GameStateProvider>
+    <BoardStateProvider>
       <App />
-    </GameStateProvider>
+    </BoardStateProvider>
   </StrictMode>,
 );

@@ -1,23 +1,28 @@
-import { useReducer, type ReactNode, type Reducer } from 'react';
+import {
+  useReducer,
+  type ActionDispatch,
+  type ReactNode,
+  type Reducer,
+} from 'react';
+import { generateInitialBoard, movePiece } from '../utils/boardStateUtils';
 import { DEFAULT_ROWS_COLS } from '../utils/constants';
-import { generateInitialBoard, movePiece } from '../utils/gameState';
-import type { GameStateType } from '../utils/types';
-import { GameStateContext } from './gameStateContext';
+import type { BoardStateType } from '../utils/types';
+import { BoardStateContext } from './boardStateContext';
 
-type GameStateAction =
+type BoardStateAction =
   | { type: 'START_GAME'; rows: number; cols: number }
   | { type: 'MOVE_PIECE'; origin: number; destination: number }
   | { type: 'RESET_GAME' };
 
-export type GameStateContextType = {
-  gameState: GameStateType;
-  dispatch: React.ActionDispatch<[action: GameStateAction]>;
+export type BoardStateContextType = {
+  boardState: BoardStateType;
+  dispatch: ActionDispatch<[action: BoardStateAction]>;
 };
 
-const gameStateReducer: Reducer<GameStateType, GameStateAction> = (
-  state: GameStateType,
-  action: GameStateAction,
-): GameStateType => {
+const boardStateReducer: Reducer<BoardStateType, BoardStateAction> = (
+  state: BoardStateType,
+  action: BoardStateAction,
+): BoardStateType => {
   switch (action.type) {
     case 'START_GAME':
       return {
@@ -44,8 +49,8 @@ const gameStateReducer: Reducer<GameStateType, GameStateAction> = (
   }
 };
 
-const GameStateProvider = ({ children }: { children: ReactNode }) => {
-  const [gameState, dispatch] = useReducer(gameStateReducer, {
+const BoardStateProvider = ({ children }: { children: ReactNode }) => {
+  const [gameState, dispatch] = useReducer(boardStateReducer, {
     board: undefined,
     rows: DEFAULT_ROWS_COLS,
     cols: DEFAULT_ROWS_COLS,
@@ -53,15 +58,15 @@ const GameStateProvider = ({ children }: { children: ReactNode }) => {
   });
 
   return (
-    <GameStateContext.Provider
+    <BoardStateContext.Provider
       value={{
-        gameState,
+        boardState: gameState,
         dispatch,
       }}
     >
       {children}
-    </GameStateContext.Provider>
+    </BoardStateContext.Provider>
   );
 };
 
-export default GameStateProvider;
+export default BoardStateProvider;

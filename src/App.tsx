@@ -1,21 +1,20 @@
 import './App.css';
 import GameBoard from './components/molecules/gameBoard';
 import StartPage from './components/pages/startPage';
-import useGameState from './contexts/gameStateContext';
+import useBoardState from './contexts/boardStateContext';
 import useGameMechanic from './hooks/useGameMechanic';
 
 const App = () => {
   const {
-    gameState: { board, rows, cols },
-  } = useGameState();
+    boardState: { board, rows, cols },
+  } = useBoardState();
 
   const { isGameStarted, currentPlayer, winner } = useGameMechanic();
 
   return (
-    <>
-      <div className='p-8 flex gap-4 flex-col'>
-        <StartPage />
-
+    <div className='min-h-screen flex items-center justify-center p-8'>
+      <StartPage />
+      <div className='flex gap-4 flex-col'>
         {isGameStarted && (
           <p className='text-center'>
             Current player is {currentPlayer.toLocaleUpperCase()}
@@ -30,7 +29,7 @@ const App = () => {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 };
 
