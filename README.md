@@ -49,6 +49,14 @@ npm run lint
 
 Runs ESLint checks on your code for TypeScript and style issues.
 
+## Features
+
+- **Start Page**: Choose between default 8x8 board or custom dimensions
+- **Custom Board Options**: Create boards from 4x4 to 26x26 with real-time validation
+- **Drag & Drop Gameplay**: Smooth piece movement using @dnd-kit library
+- **State Management**: React Context + useReducer for game state
+- **Responsive Design**: Mobile and desktop support with Tailwind CSS + DaisyUI
+
 ## Tech Stack
 
 - **React 19.1.1** - UI framework
@@ -62,12 +70,22 @@ Runs ESLint checks on your code for TypeScript and style issues.
 ```
 src/
 ├── components/
-│   ├── atoms/          - Basic UI elements (GamePiece, GameSquare)
-│   └── molecules/      - Composed components (GameBoard)
-├── hooks/              - Custom React hooks
-├── contexts/           - React Context for state management
-├── utils/              - Constants, types, and utilities
-└── App.tsx             - Root component
+│   ├── atoms/          - Basic UI elements
+│   │   ├── gamePiece.tsx      - Individual draggable game pieces
+│   │   └── gameSquare.tsx     - Board squares with drag-and-drop
+│   ├── molecules/      - Composite components
+│   │   ├── gameBoard.tsx      - Main game board
+│   │   └── gameMenu.tsx       - In-game menu for reset & custom dimensions
+│   └── pages/
+│       └── startPage.tsx      - Initial screen with game mode selection
+├── contexts/
+│   ├── boardStateContext.ts   - Context definition and useBoardState hook
+│   └── boardStateProvider.tsx - Reducer provider for game state
+├── hooks/
+│   └── useGameMechanic.ts     - Game logic (moves, win conditions, validation)
+├── utils/
+│   ├── types.ts               - TypeScript type definitions
+│   ├── constants.ts           - Game constants
+│   └── boardStateUtils.ts     - Board generation & piece movement utilities
+└── App.tsx                    - Root component
 ```
-
-For detailed architecture information, see `CLAUDE.md`.
