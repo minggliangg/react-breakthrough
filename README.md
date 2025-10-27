@@ -4,23 +4,21 @@ A React 19 + TypeScript + Vite implementation of the board game "Breakthrough". 
 
 ## Prerequisites
 
-- Node.js 18+
-- npm or pnpm
+- Node.js 20+
+- pnpm 10.19.0
 
 ## Getting Started
 
 ### 1. Install Dependencies
 
 ```bash
-npm install
-# or
 pnpm install
 ```
 
 ### 2. Start Development Server
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 This starts the Vite dev server with hot module reloading (HMR). Open the URL shown in your terminal (typically `http://localhost:5173`) in your browser.
@@ -28,7 +26,7 @@ This starts the Vite dev server with hot module reloading (HMR). Open the URL sh
 ### 3. Build for Production
 
 ```bash
-npm run build
+pnpm build
 ```
 
 Compiles TypeScript and creates an optimized production build in the `/dist` directory.
@@ -36,7 +34,7 @@ Compiles TypeScript and creates an optimized production build in the `/dist` dir
 ### 4. Preview Production Build
 
 ```bash
-npm run preview
+pnpm preview
 ```
 
 Serves the production build locally for testing before deployment.
@@ -44,7 +42,7 @@ Serves the production build locally for testing before deployment.
 ### 5. Run Linting
 
 ```bash
-npm run lint
+pnpm lint
 ```
 
 Runs ESLint checks on your code for TypeScript and style issues.
@@ -63,7 +61,10 @@ Runs ESLint checks on your code for TypeScript and style issues.
 - **TypeScript ~5.9.3** - Type safety
 - **Vite 7.1.7** - Build tool and dev server
 - **Tailwind CSS 4.1.14** - Utility-first styling
+- **DaisyUI 5.3.7** - UI component library
+- **@dnd-kit 6.3.1** - Drag and drop functionality
 - **TypeScript ESLint 8.45.0** - Linting
+- **pnpm 10.19.0** - Package manager
 
 ## Project Structure
 
