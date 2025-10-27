@@ -1,13 +1,17 @@
 import useBoardState from '../../contexts/boardStateContext';
 import ThemeSelector from './themeSelector';
 
-const GameInfoPanel = () => {
+interface GameInfoPanelProps {
+  onQuit: () => void;
+}
+
+const GameInfoPanel = ({ onQuit }: GameInfoPanelProps) => {
   const {
     boardState: { currentPlayer },
   } = useBoardState();
 
   return (
-    <div className='flex flex-col w-56 gap-4'>
+    <div className='flex flex-col gap-4'>
       <div className='stats shadow'>
         <div className='stat'>
           <div className='stat-title'>Current player</div>
@@ -15,12 +19,12 @@ const GameInfoPanel = () => {
         </div>
       </div>
 
-      <ul className='menu bg-base-200 rounded-box w-56'>
+      <ul className='menu bg-base-200 rounded-box w-72'>
         <li>
           <ThemeSelector />
         </li>
         <li>
-          <a>Quit</a>
+          <a onClick={onQuit}>Quit</a>
         </li>
       </ul>
     </div>

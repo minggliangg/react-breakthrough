@@ -32,10 +32,6 @@ const useGameMechanic = () => {
     dispatch({ type: 'GENERATE_BOARD', rows, cols });
   };
 
-  const resetGame = () => {
-    dispatch({ type: 'RESET_GAME' });
-  };
-
   const movePiece = ({ active, over }: { active: string; over?: string }) => {
     clearValidMoves();
     if (!over) {
@@ -90,7 +86,6 @@ const useGameMechanic = () => {
   return {
     isGameStarted,
     startGame,
-    resetGame,
     movePiece,
     currentPlayer,
     validMoves,

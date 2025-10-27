@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import useGameMechanic from '../../hooks/useGameMechanic';
+import CustomDimensionsInput from '../molecules/customDimensionsInput';
 import ThemeSelector from '../molecules/themeSelector';
 
 interface StartPageProps {
@@ -12,26 +13,50 @@ const StartPage = ({ callback }: StartPageProps) => {
   const [isCustom, setIsCustom] = useState(false);
   const [rows, setRows] = useState<number | undefined>();
   const [cols, setCols] = useState<number | undefined>();
+  const [errors, setErrors] = useState<{ rows?: string; cols?: string }>({});
 
-  const handleNumberInput = (
-    value: number,
-    setter: (val: number | undefined) => void,
-  ) => {
-    if (isNaN(value)) {
-      setter(undefined);
-      return;
-    }
-    // Clamp between 4 and 26
-    const clamped = Math.min(Math.max(value, 4), 26);
-    setter(clamped);
+  const MIN_SIZE = 4;
+  const MAX_SIZE = 26;
+
+  const validateDimension = (value: number | undefined): boolean => {
+    if (value === undefined) return false;
+    return value >= MIN_SIZE && value <= MAX_SIZE;
+  };
+
+  const handleDimensionChange = () => {
+    // Clear errors when user changes input
+    setErrors({});
   };
 
   const handleStartOnClick = () => {
+    if (!isCustom) {
+      startGame();
+      callback();
+      return;
+    }
+
+    // Validate custom dimensions
+    const newErrors: { rows?: string; cols?: string } = {};
+
+    if (!validateDimension(rows)) {
+      newErrors.rows = `Must be between ${MIN_SIZE} and ${MAX_SIZE}`;
+    }
+    if (!validateDimension(cols)) {
+      newErrors.cols = `Must be between ${MIN_SIZE} and ${MAX_SIZE}`;
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({});
     startGame(rows, cols);
     callback();
   };
 
-  const isStartButtonDisabled = isCustom && (!rows || !cols);
+  const isStartButtonDisabled =
+    isCustom && (!rows || !cols || Object.keys(errors).length > 0);
 
   return (
     <div className='flex flex-col gap-4 mx-auto w-xs sm:w-sm md:w-md'>
@@ -68,55 +93,21 @@ const StartPage = ({ callback }: StartPageProps) => {
       </label>
 
       {isCustom && (
-        <div className='flex flex-col gap-4 mx-auto'>
-          <p className='italic text-center opacity-50'>
-            Supported custom dimensions from 4x4 to 26x26.
-          </p>
-          <div className='flex gap-4 mx-auto'>
-            <label className='input w-36 items-center'>
-              <p>◫</p>
-              <input
-                type='number'
-                placeholder='Columns'
-                min={4}
-                max={26}
-                value={cols}
-                onChange={(e) =>
-                  handleNumberInput(e.currentTarget.valueAsNumber, setCols)
-                }
-                onBlur={(e) => {
-                  if (
-                    !e.currentTarget.value ||
-                    isNaN(e.currentTarget.valueAsNumber)
-                  ) {
-                    setCols(undefined);
-                  }
-                }}
-              />
-            </label>
-            <label className='input w-36 items-center'>
-              <p className='rotate-90'>◫</p>
-              <input
-                type='number'
-                placeholder='Rows'
-                min={4}
-                max={26}
-                value={rows}
-                onChange={(e) =>
-                  handleNumberInput(e.currentTarget.valueAsNumber, setRows)
-                }
-                onBlur={(e) => {
-                  if (
-                    !e.currentTarget.value ||
-                    isNaN(e.currentTarget.valueAsNumber)
-                  ) {
-                    setRows(undefined);
-                  }
-                }}
-              />
-            </label>
-          </div>
-        </div>
+        <CustomDimensionsInput
+          rows={rows}
+          cols={cols}
+          errors={errors}
+          onRowsChange={(val) => {
+            setRows(val);
+            handleDimensionChange();
+          }}
+          onColsChange={(val) => {
+            setCols(val);
+            handleDimensionChange();
+          }}
+          minSize={MIN_SIZE}
+          maxSize={MAX_SIZE}
+        />
       )}
     </div>
   );

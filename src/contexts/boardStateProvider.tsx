@@ -11,8 +11,7 @@ import { BoardStateContext } from './boardStateContext';
 
 type BoardStateAction =
   | { type: 'GENERATE_BOARD'; rows: number; cols: number }
-  | { type: 'MOVE_PIECE'; origin: number; destination: number }
-  | { type: 'RESET_GAME' };
+  | { type: 'MOVE_PIECE'; origin: number; destination: number };
 
 export type BoardStateContextType = {
   boardState: BoardStateType;
@@ -36,13 +35,6 @@ const boardStateReducer: Reducer<BoardStateType, BoardStateAction> = (
         ...state,
         board: movePiece(state.board!, action.origin, action.destination),
         currentPlayer: state.currentPlayer === 'white' ? 'black' : 'white',
-      };
-    case 'RESET_GAME':
-      return {
-        board: undefined,
-        rows: DEFAULT_ROWS_COLS,
-        cols: DEFAULT_ROWS_COLS,
-        currentPlayer: 'white',
       };
     default:
       return state;
