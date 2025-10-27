@@ -38,6 +38,7 @@ const THEMES = [
 
 const ThemeSelector = () => {
   const [currentTheme, setCurrentTheme] = useState('light');
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     themeChange(false);
@@ -55,30 +56,43 @@ const ThemeSelector = () => {
     setCurrentTheme(theme);
     localStorage.setItem('theme', theme);
     document.documentElement.setAttribute('data-theme', theme);
+    setIsOpen(false);
   };
 
   return (
-    <div className='dropdown'>
-      <div tabIndex={0} role='button' className='w-full text-left'>
+    <>
+      <button onClick={() => setIsOpen(true)} className='w-full text-left'>
         Change theme
         <span className='text-xs opacity-60 ml-2'>({currentTheme})</span>
-      </div>
-      <ul
-        tabIndex={0}
-        className='dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow max-h-64 overflow-y-auto'
-      >
-        {THEMES.map((theme) => (
-          <li key={theme}>
-            <button
-              onClick={() => handleThemeChange(theme)}
-              className={currentTheme === theme ? 'active' : ''}
-            >
-              {theme.charAt(0).toUpperCase() + theme.slice(1)}
+      </button>
+
+      <div className={`modal flex ${isOpen ? 'modal-open' : ''}`}>
+        <div className='modal-box flex flex-col'>
+          <h3 className='font-bold text-lg'>Select Theme</h3>
+          <div className='grid grid-cols-2 gap-2 overflow-y-auto'>
+            {THEMES.map((theme) => (
+              <button
+                key={theme}
+                onClick={() => handleThemeChange(theme)}
+                className={`btn btn-sm justify-start ${
+                  currentTheme === theme ? 'btn-active' : 'btn-ghost'
+                }`}
+              >
+                {theme.charAt(0).toUpperCase() + theme.slice(1)}
+              </button>
+            ))}
+          </div>
+          <div className='modal-action'>
+            <button onClick={() => setIsOpen(false)} className='btn'>
+              Close
             </button>
-          </li>
-        ))}
-      </ul>
-    </div>
+          </div>
+        </div>
+        <div className='modal-backdrop' onClick={() => setIsOpen(false)}>
+          <button>close</button>
+        </div>
+      </div>
+    </>
   );
 };
 
