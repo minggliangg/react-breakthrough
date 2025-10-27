@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import useGameMechanic from '../../hooks/useGameMechanic';
+import ThemeSelector from '../molecules/themeSelector';
 
 interface StartPageProps {
   callback: () => void;
@@ -37,8 +38,16 @@ const StartPage = ({ callback }: StartPageProps) => {
       <h1 className='text-4xl font-extrabold text-center'>Breakthrough</h1>
       <p className='italic text-center opacity-50'>
         The ultimate pawn race where every move is a daring dash to your
-        opponent’s home row—simple rules, cutthroat strategy!
+        opponent's home row—simple rules, cutthroat strategy!
       </p>
+
+      <div className='flex justify-center'>
+        <ul className='menu bg-base-200 rounded-box w-56'>
+          <li>
+            <ThemeSelector />
+          </li>
+        </ul>
+      </div>
 
       <button
         className='btn btn-primary mt-4'
