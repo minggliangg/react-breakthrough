@@ -29,7 +29,7 @@ const useGameMechanic = () => {
     rows: number = DEFAULT_ROWS_COLS,
     cols: number = DEFAULT_ROWS_COLS,
   ) => {
-    dispatch({ type: 'START_GAME', rows, cols });
+    dispatch({ type: 'GENERATE_BOARD', rows, cols });
   };
 
   const resetGame = () => {

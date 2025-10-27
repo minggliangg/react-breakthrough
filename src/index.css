@@ -1,2 +1,23 @@
 @import 'tailwindcss';
 @plugin "daisyui";
+
+/* iOS PWA - Remove white bar and use full screen */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+body {
+  /* Extend content into safe areas on iOS */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+    env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}

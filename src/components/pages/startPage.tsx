@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import useGameMechanic from '../../hooks/useGameMechanic';
 
-const StartPage = () => {
+interface StartPageProps {
+  callback: () => void;
+}
+
+const StartPage = ({ callback }: StartPageProps) => {
   const { startGame } = useGameMechanic();
 
   const [isCustom, setIsCustom] = useState(false);
@@ -23,6 +27,7 @@ const StartPage = () => {
 
   const handleStartOnClick = () => {
     startGame(rows, cols);
+    callback();
   };
 
   const isStartButtonDisabled = isCustom && (!rows || !cols);
@@ -58,7 +63,7 @@ const StartPage = () => {
           <p className='italic text-center opacity-50'>
             Supported custom dimensions from 4x4 to 26x26.
           </p>
-          <div className='flex flex-col sm:flex-row gap-4 mx-auto'>
+          <div className='flex gap-4 mx-auto'>
             <label className='input w-36 items-center'>
               <p>◫</p>
               <input

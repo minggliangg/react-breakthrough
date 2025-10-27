@@ -1,34 +1,15 @@
+import { useState } from 'react';
 import './App.css';
-import GameBoard from './components/molecules/gameBoard';
+import GamePage from './components/pages/gamePage';
 import StartPage from './components/pages/startPage';
-import useBoardState from './contexts/boardStateContext';
-import useGameMechanic from './hooks/useGameMechanic';
 
 const App = () => {
-  const {
-    boardState: { board, rows, cols },
-  } = useBoardState();
-
-  const { isGameStarted, currentPlayer, winner } = useGameMechanic();
+  const [screen, setScreen] = useState<'start' | 'game'>('start');
 
   return (
     <div className='min-h-screen flex items-center justify-center p-8'>
-      <StartPage />
-      <div className='flex gap-4 flex-col'>
-        {isGameStarted && (
-          <p className='text-center'>
-            Current player is {currentPlayer.toLocaleUpperCase()}
-          </p>
-        )}
-
-        {winner() && <p className='text-center'>Winner is {winner()}</p>}
-
-        {board && (
-          <div className='mt-6 flex flex-col items-center'>
-            <GameBoard rows={rows} columns={cols} board={board} />
-          </div>
-        )}
-      </div>
+      {screen === 'start' && <StartPage callback={() => setScreen('game')} />}
+      {screen === 'game' && <GamePage />}
     </div>
   );
 };

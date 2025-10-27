@@ -17,21 +17,24 @@ const GameSquare = ({
   isAvailabeMove = false,
   isDisabled = false,
 }: GameSquareProps) => {
-  const { isOver, setNodeRef } = useDroppable({
+  const { setNodeRef } = useDroppable({
     id: id,
   });
 
   const getSquareColor = () => {
-    if (isOver) return 'bg-red-500';
-    if (isAvailabeMove) return 'bg-green-500';
-    if (color == 'black') return 'bg-blue-500';
-    if (color == 'white') return 'bg-white';
+    let colorStyleString;
+    if (color == 'black') colorStyleString = 'bg-neutral-700';
+    if (color == 'white') colorStyleString = 'bg-neutral-content';
+    if (isAvailabeMove)
+      colorStyleString = `${colorStyleString} border-green-500 border-2`;
+
+    return colorStyleString;
   };
 
   return (
     <div
       ref={setNodeRef}
-      className={`w-6 h-6 flex items-center justify-center ${getSquareColor()} ${!isDisabled && ' hover:bg-yellow-500'}`}
+      className={`w-8 h-8 flex items-center justify-center ${getSquareColor()} ${!isDisabled && ' hover:border-yellow-500 hover:border-2'} m-0.5 rounded-xs`}
     >
       {gamePiece && (
         <GamePiece

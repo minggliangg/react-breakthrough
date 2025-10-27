@@ -10,7 +10,7 @@ import type { BoardStateType } from '../utils/types';
 import { BoardStateContext } from './boardStateContext';
 
 type BoardStateAction =
-  | { type: 'START_GAME'; rows: number; cols: number }
+  | { type: 'GENERATE_BOARD'; rows: number; cols: number }
   | { type: 'MOVE_PIECE'; origin: number; destination: number }
   | { type: 'RESET_GAME' };
 
@@ -24,7 +24,7 @@ const boardStateReducer: Reducer<BoardStateType, BoardStateAction> = (
   action: BoardStateAction,
 ): BoardStateType => {
   switch (action.type) {
-    case 'START_GAME':
+    case 'GENERATE_BOARD':
       return {
         board: generateInitialBoard(action.rows, action.cols),
         rows: action.rows,
