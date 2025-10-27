@@ -1,5 +1,7 @@
 @import 'tailwindcss';
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes: all;
+}
 
 /* iOS PWA - Remove white bar and use full screen */
 html,

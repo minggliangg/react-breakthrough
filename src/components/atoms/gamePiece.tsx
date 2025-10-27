@@ -13,8 +13,8 @@ const GamePiece = ({ id, color, isDisabled }: GamePieceProps) => {
     id: id,
   });
 
-  const fillColor = color === 'black' ? 'fill-neutral' : 'fill-neutral-content';
-  const strokeColor = color == 'black' ? 'stroke-base-100' : 'stroke-base-100';
+  const fillColor = color === 'black' ? 'fill-gray-800' : 'fill-gray-100';
+  const strokeColor = color === 'black' ? 'stroke-gray-300' : 'stroke-gray-800';
 
   return (
     <div
@@ -28,7 +28,7 @@ const GamePiece = ({ id, color, isDisabled }: GamePieceProps) => {
       }}
     >
       <svg
-        className={`w-4 h-4 ${fillColor} ${strokeColor} stroke-12 cursor-pointer :hover:stroke-blue-500`}
+        className={`w-4 h-4 ${fillColor} ${strokeColor} stroke-12 cursor-pointer`}
         viewBox='0 -10 320 320'
         xmlns='http://www.w3.org/2000/svg'
       >

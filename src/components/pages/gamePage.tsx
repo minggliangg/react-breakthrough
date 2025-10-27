@@ -1,5 +1,6 @@
 import useBoardState from '../../contexts/boardStateContext';
 import GameBoard from '../molecules/gameBoard';
+import GameInfoPanel from '../molecules/gameInfoPanel';
 
 const GamePage = () => {
   const {
@@ -11,8 +12,11 @@ const GamePage = () => {
   }
 
   return (
-    <div className='flex flex-col items-center'>
-      <GameBoard board={board} rows={rows} columns={cols} />
+    <div className='flex gap-4 flex-col md:flex-row'>
+      <div className='flex flex-col items-center'>
+        <GameBoard board={board} rows={rows} columns={cols} />
+      </div>
+      <GameInfoPanel />
     </div>
   );
 };

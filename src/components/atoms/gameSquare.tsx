@@ -23,8 +23,8 @@ const GameSquare = ({
 
   const getSquareColor = () => {
     let colorStyleString;
-    if (color == 'black') colorStyleString = 'bg-neutral-700';
-    if (color == 'white') colorStyleString = 'bg-neutral-content';
+    if (color == 'black') colorStyleString = 'bg-accent-content';
+    if (color == 'white') colorStyleString = 'bg-accent';
     if (isAvailabeMove)
       colorStyleString = `${colorStyleString} border-green-500 border-2`;
 
