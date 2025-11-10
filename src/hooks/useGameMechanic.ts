@@ -3,22 +3,20 @@ import useGameStore from '../stores/useGameStore';
 import { DEFAULT_ROWS_COLS } from '../utils/constants';
 
 const useGameMechanic = () => {
-  // Get state and actions from Zustand stores
-  const {
-    currentPlayer,
-    generateBoard,
-    movePiece: movePieceStore,
-    togglePlayer,
-  } = useBoardStore();
-  const {
-    validMoves,
-    setValidMoves,
-    clearValidMoves,
-    getWinner,
-    isGameStarted,
-    calculateValidMoves,
-    getIndexFromId,
-  } = useGameStore();
+  // Use selective Zustand subscriptions to prevent unnecessary rerenders
+  // Only rerender when specific properties change
+  const currentPlayer = useBoardStore((state) => state.currentPlayer);
+  const generateBoard = useBoardStore((state) => state.generateBoard);
+  const movePieceStore = useBoardStore((state) => state.movePiece);
+  const togglePlayer = useBoardStore((state) => state.togglePlayer);
+
+  const validMoves = useGameStore((state) => state.validMoves);
+  const setValidMoves = useGameStore((state) => state.setValidMoves);
+  const clearValidMoves = useGameStore((state) => state.clearValidMoves);
+  const getWinner = useGameStore((state) => state.getWinner);
+  const isGameStarted = useGameStore((state) => state.isGameStarted);
+  const calculateValidMoves = useGameStore((state) => state.calculateValidMoves);
+  const getIndexFromId = useGameStore((state) => state.getIndexFromId);
 
   const winner = () => {
     return getWinner();
