@@ -1,4 +1,4 @@
-import useBoardState from '../../contexts/boardStateContext';
+import useBoardStore from '../../stores/useBoardStore';
 import ThemeSelector from './themeSelector';
 
 interface GameInfoPanelProps {
@@ -6,16 +6,14 @@ interface GameInfoPanelProps {
 }
 
 const GameInfoPanel = ({ onQuit }: GameInfoPanelProps) => {
-  const {
-    boardState: { currentPlayer },
-  } = useBoardState();
+  const currentPlayer = useBoardStore((state) => state.currentPlayer);
 
   return (
     <div className='flex flex-col gap-4'>
       <div className='stats shadow'>
         <div className='stat'>
           <div className='stat-title'>Current player</div>
-          <div className='stat-value'>{currentPlayer.toUpperCase()}</div>
+          <div className='stat-value'>{currentPlayer?.toUpperCase()}</div>
         </div>
       </div>
 

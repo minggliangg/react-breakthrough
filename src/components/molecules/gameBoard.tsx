@@ -1,3 +1,4 @@
+import { useMemo, useCallback } from 'react';
 import {
   DndContext,
   MouseSensor,
@@ -5,6 +6,7 @@ import {
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
+import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core';
 import useGameMechanic from '../../hooks/useGameMechanic';
 import type { GameBoardType } from '../../utils/types';
 import GameSquare from '../atoms/gameSquare';
@@ -24,18 +26,26 @@ const GameBoard = ({ rows, columns, board }: GameBoardProps) => {
 
   const sensors = useSensors(mouseSensor, touchSensor);
 
+  // Memoize winner calculation to prevent calling it for every square on every render
+  const gameWinner = useMemo(() => winner(), [board]);
+
+  // Memoize drag handlers to prevent unnecessary context updates
+  const handleDragStart = useCallback((event: DragStartEvent) => {
+    getValidMoves(event.active.id.toString());
+  }, [getValidMoves]);
+
+  const handleDragEnd = useCallback((event: DragEndEvent) => {
+    movePiece({
+      active: event.active.id.toString(),
+      over: event.over?.id.toString(),
+    });
+  }, [movePiece]);
+
   return (
     <DndContext
       sensors={sensors}
-      onDragStart={(event) => {
-        getValidMoves(event.active.id.toString());
-      }}
-      onDragEnd={(event) => {
-        movePiece({
-          active: event.active.id.toString(),
-          over: event.over?.id.toString(),
-        });
-      }}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
     >
       {Array(rows)
         .fill(0)
@@ -54,7 +64,7 @@ const GameBoard = ({ rows, columns, board }: GameBoardProps) => {
                     isAvailabeMove={validMoves.includes(index)}
                     gamePiece={gamePiece}
                     isDisabled={
-                      winner() != undefined || currentPlayer != gamePiece
+                      gameWinner != undefined || currentPlayer != gamePiece
                     }
                   />
                 );

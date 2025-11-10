@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
-import useBoardState from '../../contexts/boardStateContext';
 import useGameMechanic from '../../hooks/useGameMechanic';
+import useBoardStore from '../../stores/useBoardStore';
 import GameBoard from '../molecules/gameBoard';
 import GameInfoPanel from '../molecules/gameInfoPanel';
 
@@ -9,9 +9,10 @@ interface GamePageProps {
 }
 
 const GamePage = ({ onQuit }: GamePageProps) => {
-  const {
-    boardState: { board, rows, cols },
-  } = useBoardState();
+  // Use selective subscriptions to prevent unnecessary rerenders
+  const board = useBoardStore((state) => state.board);
+  const rows = useBoardStore((state) => state.rows);
+  const cols = useBoardStore((state) => state.cols);
   const { winner } = useGameMechanic();
 
   const modalRef = useRef<HTMLDialogElement>(null);
@@ -21,7 +22,7 @@ const GamePage = ({ onQuit }: GamePageProps) => {
     if (winnerResult && modalRef.current) {
       modalRef.current.showModal();
     }
-  }, [winner]);
+  }, [board]);
 
   if (!board || !rows || !cols) {
     return <span className='loading loading-bars loading-xl' />;
