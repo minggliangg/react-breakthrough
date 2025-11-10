@@ -61,17 +61,26 @@ const useGameStore = create<GameState & GameActions>((set) => ({
     const offset = direction * cols;
     const currentValidMoves = [];
 
-    if (board[squareIndex + offset] == null) {
-      currentValidMoves.push(squareIndex + offset);
+    const isWithinBoard = (index: number) => index >= 0 && index < board.length;
+
+    const forwardIndex = squareIndex + offset;
+    if (isWithinBoard(forwardIndex) && board[forwardIndex] == null) {
+      currentValidMoves.push(forwardIndex);
     }
 
     if (squareIndex % cols != 0) {
-      currentValidMoves.push(squareIndex + offset - 1);
+      const leftDiagonal = squareIndex + offset - 1;
+      if (isWithinBoard(leftDiagonal)) {
+        currentValidMoves.push(leftDiagonal);
+      }
     }
 
     // Check right diagonal
     if (squareIndex % cols != cols - 1) {
-      currentValidMoves.push(squareIndex + offset + 1);
+      const rightDiagonal = squareIndex + offset + 1;
+      if (isWithinBoard(rightDiagonal)) {
+        currentValidMoves.push(rightDiagonal);
+      }
     }
 
     // Filter moves to exclude those occupied by current player
