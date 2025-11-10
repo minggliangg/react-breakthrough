@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
-import useBoardState from '../../contexts/boardStateContext';
 import useGameMechanic from '../../hooks/useGameMechanic';
+import useBoardStore from '../../stores/useBoardStore';
 import GameBoard from '../molecules/gameBoard';
 import GameInfoPanel from '../molecules/gameInfoPanel';
 
@@ -9,9 +9,7 @@ interface GamePageProps {
 }
 
 const GamePage = ({ onQuit }: GamePageProps) => {
-  const {
-    boardState: { board, rows, cols },
-  } = useBoardState();
+  const { board, rows, cols } = useBoardStore();
   const { winner } = useGameMechanic();
 
   const modalRef = useRef<HTMLDialogElement>(null);

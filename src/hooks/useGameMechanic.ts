@@ -1,35 +1,34 @@
-import { useState } from 'react';
-import useBoardState from '../contexts/boardStateContext';
-import { getIndexFromId } from '../utils/boardStateUtils';
+import useBoardStore from '../stores/useBoardStore';
+import useGameStore from '../stores/useGameStore';
 import { DEFAULT_ROWS_COLS } from '../utils/constants';
 
 const useGameMechanic = () => {
-  const { boardState, dispatch } = useBoardState();
-
-  const [validMoves, setValidMoves] = useState<number[]>([]);
-
-  const { board, cols, currentPlayer } = boardState;
-
-  const isGameStarted = board != undefined;
+  // Get state and actions from Zustand stores
+  const {
+    currentPlayer,
+    generateBoard,
+    movePiece: movePieceStore,
+    togglePlayer,
+  } = useBoardStore();
+  const {
+    validMoves,
+    setValidMoves,
+    clearValidMoves,
+    getWinner,
+    isGameStarted,
+    calculateValidMoves,
+    getIndexFromId,
+  } = useGameStore();
 
   const winner = () => {
-    if (!isGameStarted) return;
-    for (let i = 0; i < cols; i++) {
-      if (board[i] === 'white') return 'white';
-    }
-
-    for (let i = board.length - cols; i < board.length; i++) {
-      if (board[i] === 'black') return 'black';
-    }
-
-    return;
+    return getWinner();
   };
 
   const startGame = (
     rows: number = DEFAULT_ROWS_COLS,
     cols: number = DEFAULT_ROWS_COLS,
   ) => {
-    dispatch({ type: 'GENERATE_BOARD', rows, cols });
+    generateBoard(rows, cols);
   };
 
   const movePiece = ({ active, over }: { active: string; over?: string }) => {
@@ -38,53 +37,30 @@ const useGameMechanic = () => {
       return;
     }
 
-    const activeIndex = getIndexFromId(active, boardState.cols);
-    const overIndex = getIndexFromId(over, boardState.cols);
+    const activeIndex = getIndexFromId(active);
+    const overIndex = getIndexFromId(over);
 
     if (activeIndex === overIndex || !validMoves.includes(overIndex)) {
       return;
     }
 
-    dispatch({
-      type: 'MOVE_PIECE',
-      origin: activeIndex,
-      destination: overIndex,
-    });
+    movePieceStore(activeIndex, overIndex);
+    togglePlayer();
   };
 
   const getValidMoves = (active: string) => {
-    const activeIndex = getIndexFromId(active, boardState.cols);
+    const activeIndex = getIndexFromId(active);
 
-    if (!isGameStarted) {
+    if (!isGameStarted()) {
       return;
     }
 
-    const direction = currentPlayer === 'black' ? 1 : -1;
-    const offset = direction * boardState.cols;
-    const currentValidMoves = [];
-
-    if (board[activeIndex + offset] == null) {
-      currentValidMoves.push(activeIndex + offset);
-    }
-
-    if (activeIndex % cols != 0) {
-      currentValidMoves.push(activeIndex + offset - 1);
-    }
-    if (activeIndex % cols != cols - 1) {
-      currentValidMoves.push(activeIndex + offset + 1);
-    }
-
-    const filteredMoves = currentValidMoves.filter((move) => {
-      return board[move] != currentPlayer;
-    });
-
-    setValidMoves(filteredMoves);
+    const moves = calculateValidMoves(activeIndex);
+    setValidMoves(moves);
   };
 
-  const clearValidMoves = () => setValidMoves([]);
-
   return {
-    isGameStarted,
+    isGameStarted: isGameStarted(),
     startGame,
     movePiece,
     currentPlayer,
